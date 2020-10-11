@@ -1,0 +1,12 @@
+name: VNDB quotes
+on: "*/30 * * * *"
+jobs:
+  get-quotes:
+    name: Get quote
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - run python get_quote.py
