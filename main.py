@@ -19,14 +19,16 @@ user_agent = os.getenv('USER_AGENT', (
 def get_quote(txt):
   soup = BeautifulSoup(txt, 'html.parser')
   el = soup                                \
-    .find('div', id='footer')              \
+    .find('footer')                        \
     .find('a', href=re.compile(r'^/v\d+'))
+  print(f"quote: {el and el.get_text()}, id: {el['href']}")
   return el and el.get_text(), f'https://vndb.org{el["href"]}'
 
 def get_title(txt):
   soup = BeautifulSoup(txt, 'html.parser')
-  el = soup.find('div', class_='mainbox')
+  el = soup.select_one('main article:first-child')
   title, alt_title = el.find('h1'), el.find('h2', class_='alttitle')
+  print(f"title: {title and title.get_text()}, alt title: {alt_title and alt_title.get_text()}")
   return title and title.get_text(), alt_title and alt_title.get_text()
 
 def vndb_req(url):
